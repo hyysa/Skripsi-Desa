@@ -1,0 +1,12 @@
+.preview-image {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (min-width: 992px) {
+    .preview-image {
+        width: 900px;
+        height: 400px;
+        object-fit: cover;
+    }
+}

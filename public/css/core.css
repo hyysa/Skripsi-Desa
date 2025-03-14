@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;200;300;400;500;600;700;800&display=swap");
+
+body {
+    font-family: "Noto Sans KR", sans-serif;
+}
+
+.bg-blue-900 {
+    background-color: #07244f;
+}
+
+.bg-black-900 {
+    background-color: #1f2024 !important;
+}
+
+.clr-white-900 {
+    color: white !important;
+}
+
+.bg-blue-500 {
+    background-color: #1151d3;
+}
+
+.bg-brown-500 {
+    background-color: #eeeeee;
+}
+
+.header-active {
+    background-color: #1151d3;
+    color: white;
+}
+
+.card-img-top {
+    object-fit: cover;
+    height: calc(25vw);
+    width: 100%;
+}
+
+@media (min-width: 992px) {
+    .card-img-top {
+        height: autp;
+    }
+}
