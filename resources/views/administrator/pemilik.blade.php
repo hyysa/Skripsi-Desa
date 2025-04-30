@@ -1,5 +1,5 @@
 @extends('layouts.super')
-@section('title', 'Daftar Pemetaan | Administrator')
+@section('title', 'Daftar Pemilik | Administrator')
 @section('content')
 <div id="content">
 
@@ -45,13 +45,13 @@
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Daftar Pemetaan</h1>
+        <h1 class="h3 mb-2 text-gray-800">Daftar Pemilik</h1>
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Daftar Pemetaan</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Daftar Pemilik</h6>
                 <hr>
-                <a class="btn btn-success" href="{{ route('pemetaan.tambah') }}" role="button"><i class="fas fa-file"></i> Tambah Pemetaan</a>
+                <a class="btn btn-success" href="{{ route('pemilik.tambah') }}" role="button"><i class="fas fa-file"></i> Tambah Pemilik</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -59,24 +59,24 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Blok</th>
+                                <th>Nama Pemilik</th>
                                 <th>Persil</th>
-                                <th>Kelas</th>
-                                <th>Koordinat</th>
+                                <th>Luas</th>
+                                <th>Keterangan</th>
                                 <th>Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($pemetaan as $item)
+                            @foreach ($pemilik as $item)
                             <tr>
                                 <th scope="row">{{$loop->iteration}}</th>
-                                <td>{{ $item->blok }}</td>
+                                <td>{{ $item->nama_pemilik }}</td>
                                 <td>{{ $item->persil }}</td>
-                                <td>{{ $item->kelas }}</td>
-                                <td>{{ json_encode($item->koordinat) }}</td>
+                                <td>{{ $item->luas }}</td>
+                                <td>{{ $item->keterangan }}</td>
                                 <td>
-                                    <a class="btn btn-success" href="{{ route('pemetaan.edit', $item->id) }}" role="button">Edit</a>
-                                    <form id="form-hapus-{{ $item->id }}" method="post" action="{{ route('pemetaan.delete', $item->id) }}">
+                                    <a class="btn btn-success" href="{{ route('pemilik.edit', $item->id) }}" role="button">Edit</a>
+                                    <form id="form-hapus-{{ $item->id }}" method="post" action="{{ route('pemilik.delete', $item->id) }}">
                                         @csrf
                                         @method('delete')
                                         <button type="button" class="btn btn-danger" onclick="konfirmasiHapus({{ $item->id }})">Hapus</button>

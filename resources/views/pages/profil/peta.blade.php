@@ -24,88 +24,94 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card map-container">
-                    <div class="card-header">Pemetaan Blok</div>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Pemetaan Blok dan Persil Desa Pandanarum</span>
+                        <a href="{{ route('list.pemilik')}}" class="btn btn-outline-primary btn-sm">Detail Pemilik</a>
+                    </div>
                     <div class="card-body">
                         <div id="map"></div>
                     </div>
                 </div>
             </div>
         </div>
-    @push('javascript')
+    @push('script1')
     <script>
-    var map = L.map('map').setView([-8.183608213057614, 112.19258084611654], 16);var map = L.map('map').setView([-8.183608213057614, 112.19258084611654], 16);
+         mapboxgl.accessToken = 'pk.eyJ1IjoiaGlsZ2FzYXRyaWEiLCJhIjoiY203dzdvNDJxMDJuaDJxcHRnbGV1emUzYyJ9.LJBgThSO_DyKtLl2SizjxA';
 
-L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/">2022</a>',
-    maxZoom: 23,
-    id: 'mapbox/satellite-streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: 'pk.eyJ1IjoiaGlsZ2FzYXRyaWEiLCJhIjoiY203dzdvNDJxMDJuaDJxcHRnbGV1emUzYyJ9.LJBgThSO_DyKtLl2SizjxA'
-}).addTo(map);
+        // Inisialisasi Peta Mapbox dalam Leaflet
+        var map = L.map('map').setView([-8.183608213057614, 112.19258084611654], 15);
 
-// Fungsi untuk warna acak
-function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}
-
-// Ambil data dari Laravel
-var peta = {!! json_encode($peta->toArray()) !!};
-
-peta.forEach(function(item) {
-    try {
-        if (!item['koordinat']) {
-            console.warn("Data koordinat kosong untuk ID:", item['id']);
-            return;
-        }
-
-        var cords = JSON.parse(item['koordinat']);
-
-        // Pastikan data adalah Polygon
-        if (cords.type !== "Polygon") {
-            console.warn("Data bukan Polygon untuk ID:", item['id']);
-            return;
-        }
-
-        var coordinates = cords.coordinates[0];
-
-        // Pastikan koordinat berbentuk array
-        if (!Array.isArray(coordinates)) {
-            console.error("Data koordinat tidak berbentuk array!", coordinates);
-            return;
-        }
-
-        // Balik koordinat dari [lng, lat] ke [lat, lng]
-        var latLngCoordinates = coordinates.map(coord => [coord[1], coord[0]]);
-
-        // Buat polygon di Leaflet
-        var polygon = L.polygon(latLngCoordinates, {
-            color: getRandomColor(),
-            fillColor: getRandomColor(),
-            fillOpacity: 0.8
+        L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v12/tiles/{z}/{x}/{y}?access_token=' + mapboxgl.accessToken, {
+            attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a>',
+            tileSize: 512,
+            zoomOffset: -1,
         }).addTo(map);
 
-        polygon.bindPopup(
-            '<b>ID</b>: ' + item['id'] + '<br>' +
-            "<b>Dusun: </b>" + item['dusun'] + "<br>" +
-            "<b>Pemilik: </b>" + item['nama_pemilik'] + "<br>" +
-            "<b>Blok: </b>" + item['blok'] + "<br>" +
-            "<b>Kelas: </b>" + item['kelas'] + "<br>" +
-            "<b>Luas: </b>" + item['luas'] + "m<sup>2</sup><br>"
-        );
+        // Fungsi untuk warna acak
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
 
-    } catch (error) {
-        console.error("Error parsing koordinat: ", error);
-    }
-});
+        // Data dari Laravel (pastikan dikirim dari controller)
+        var peta = @json($peta);
 
+        // Loop untuk menampilkan semua poligon
+        peta.forEach(function(item) {
+            var cords = typeof item.koordinat === 'string' ? JSON.parse(item.koordinat) : item.koordinat; // Pastikan koordinat adalah string JSON yang valid
+
+            if (cords.type === "Polygon") {
+                var coordinates = cords.coordinates[0]; // Ambil koordinat pertama dari array
+
+                // Ubah format koordinat agar sesuai dengan Leaflet
+                var polygonCoords = coordinates.map(coord => [coord[1], coord[0]]);
+
+                // Tambahkan poligon ke peta
+                var polygon = L.polygon(polygonCoords, {
+                    color: getRandomColor(),
+                    fillColor: getRandomColor(),
+                    fillOpacity: 0.6
+                }).addTo(map);
+
+                // **Menghitung titik tengah (center) menggunakan Turf.js**
+                if (center && center.geometry && center.geometry.coordinates) {
+                var center = turf.center(cords);
+                var centerCoords = center.geometry.coordinates;
+                L.marker([centerCoords[1], centerCoords[0]], {
+                    icon: L.divIcon({
+                        className: 'custom-marker',
+                        iconSize: [10, 10],
+                        html: '<div style="background-color:' + getRandomColor() + '; width:12px; height:12px; border-radius:50%;"></div>'
+                    })
+                }).addTo(map);
+                } else {
+                    console.log("Center point tidak valid untuk:", item);
+                }
+                // var center = turf.center(cords);
+                // var centerCoords = center.geometry.coordinates;
+                // var markerCenter = L.marker([centerCoords[1], centerCoords[0]], {
+                //     icon: L.divIcon({
+                //         className: 'custom-marker',
+                //         iconSize: [10, 10],
+                //         html: '<div style="background-color:' + getRandomColor() + '; width:12px; height:12px; border-radius:50%;"></div>'
+                //     })
+                // }).addTo(map);
+
+                // Tambahkan Popup atribut
+                polygon.bindPopup(`
+                    <b>Blok:</b> ${item.blok}<br>
+                    <b>Kelas:</b> ${item.kelas}<br>
+                    <b>Persil:</b> ${item.persil}<br>
+                    <b>Nama Pemilik:</b> ${item.nama_pemilik}
+                `);
+            }
+        });
     </script>
-@endpush
+    @endpush
     </div>
 @endsection
 

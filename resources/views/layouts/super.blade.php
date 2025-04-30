@@ -64,6 +64,11 @@
                     <span>Pemetaan</span></a>
             </li>
             <li class="nav-item active">
+                <a class="nav-link" href="/administrator/pemilik">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Pemilik Tanah</span></a>
+            </li>
+            <li class="nav-item active">
                 <a class="nav-link" href="/administrator/video">
                     <i class="fas fa-fw fa-video"></i>
                     <span>Daftar Video</span></a>
@@ -126,7 +131,27 @@
 
     <!-- Page level custom scripts -->
     <script src="{{asset('template/js/demo/datatables-demo.js')}}"></script>
- @stack('script')
+    @stack('script')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @stack('message')
+    <script>
+        function konfirmasiHapus(id) {
+            Swal.fire({
+                title: 'Yakin mau hapus?',
+                text: "Data tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('form-hapus-' + id).submit();
+                }
+            });
+        }
+    </script>
+    @stack('notifikasi')
 </body>
 
 </html>

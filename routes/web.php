@@ -9,6 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\PetaController;
 use App\Http\Controllers\PemetaanController;
+use App\Http\Controllers\PemilikController;
 
 
 
@@ -72,6 +73,8 @@ Route::get('/demografi', function () {
 });
 
 Route::get('/peta', [PetaController::class, 'index']);
+
+Route::get('/daftar-pemilik', [HomeController::class, 'listPemilik'])->name('list.pemilik');
 
 // End Halaman Profile
 
@@ -163,8 +166,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/administrator/pemetaan', [PemetaanController::class, 'index'])->name('pemetaan.index');
     Route::get('/administrator/tambah-peta', [PemetaanController::class, 'create'])->name('pemetaan.tambah');
     Route::post('/administrator/pemetaan', [PemetaanController::class, 'store'])->name('pemetaan.store');
-    Route::get('/administrator/edit/{id}', [PemetaanController::class, 'edit'])->name('pemetaan.edit');
-    Route::put('/administrator/edit/{id}', [PemetaanController::class, 'update'])->name('pemetaan.update');
+    Route::get('/administrator/edit-pemetaan/{id}', [PemetaanController::class, 'edit'])->name('pemetaan.edit');
+    Route::put('/administrator/edit-pemetaan/{id}', [PemetaanController::class, 'update'])->name('pemetaan.update');
+    Route::delete('/administrator/delete-pemetaan/{id}', [PemetaanController::class, 'destroy'])->name('pemetaan.delete');
+    //Route Pemilik
+    Route::get('/administrator/pemilik', [PemilikController::class, 'index'])->name('pemilik.index');
+    Route::get('/administrator/tambah-pemilik', [PemilikController::class, 'create'])->name('pemilik.tambah');
+    Route::post('/administrator/pemilik', [PemilikController::class, 'store'])->name('pemilik.store');
+    Route::get('/administrator/edit-pemilik/{id}', [PemilikController::class, 'edit'])->name('pemilik.edit');
+    Route::put('/administrator/edit-pemilik/{id}', [PemilikController::class, 'update'])->name('pemilik.update');
+    Route::delete('/administrator/delete-pemilik/{id}', [PemilikController::class, 'destroy'])->name('pemilik.delete');
     //Route Logout
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

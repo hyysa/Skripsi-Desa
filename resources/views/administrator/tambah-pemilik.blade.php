@@ -1,5 +1,5 @@
 @extends('layouts.super')
-@section('title', 'Tambah Berita | Administrator')
+@section('title', 'Tambah Pemilik | Administrator')
 @section('content')
 <div id="content">
 
@@ -46,7 +46,7 @@
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Tambah Berita</h1>
+            <h1 class="h3 mb-0 text-gray-800">Tambah Pemilik Tanah</h1>
         </div>
 
         <!-- Content Row -->
@@ -56,34 +56,34 @@
                 <div class="card shadow mb-4 h-100">
                     <!-- Card Header - Dropdown -->
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">Form Tambah Berita</h6> 
+                        <h6 class="m-0 font-weight-bold text-primary">Form Tambah Data Pemilik</h6> 
                     </div>
                     <!-- Card Body -->
                     <div class="card-body">
-                        <form method="post" action="{{ route('berita.store') }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('pemilik.store') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                              <label for="nama_author">Nama Author</label>
-                              <input type="text" name="nama_author" class="form-control" id="nama_author" aria-describedby="nama_author" placeholder="author" value="{{ Auth::user()->name }}" readonly>
+                              <label for="nama_pemilik">Nama Pemilik</label>
+                              <input type="text" name="nama_pemilik" class="form-control" id="nama_pemilik" placeholder="Masukkan Nama Pemilik" required>
                             </div>
                             <div class="form-group">
-                              <label for="judul">Judul</label>
-                              <input type="text" name="judul" class="form-control" id="judul" aria-describedby="judul" placeholder="Masukkan Judul">
-                            </div>
-                            <div class="form-floating">
-                                <label for="floatingTextarea2">Isi Berita</label>
-                                <textarea class="form-control" placeholder="Masukkan Isi Berita..." name="isi_berita" id="floatingTextarea2" style="height: 100px"></textarea>
-                            </div>
-                            <div class="form-group">
-                              <label for="kategori">Kategori</label>
-                              <input type="text" name="kategori" class="form-control" id="kategori" aria-describedby="kategori" placeholder="Masukkan Judul">
+                                <label for="persil">No. Persil</label>
+                                <select id="persil" class="form-control" name="persil" required>
+                                    <option value="" disabled selected>Pilih Kelas</option>
+                                    @foreach($pemetaan as $item)
+                                        <option value="{{ $item->persil }}">{{ $item->persil }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label for="formFile" class="form-label">Dokumentasi</label>
-                                <input class="form-control" type="file" name="dokumentasi" id="formFile">
+                                <label for="luas">Luas</label>
+                                <input id="luas" type="number" class="form-control" name="luas" required>
                             </div>
-                            
-                            <br><br>
+                            <div class="form-group">
+                              <label for="keterangan">Keterangan</label>
+                              <input type="text" name="keterangan" class="form-control" id="keterangan" placeholder="Masukkan Keterangan" required>
+                            </div>
+                            <br>
                             <button type="submit" class="btn btn-primary">Tambah</button>
                         </form>
                     </div>

@@ -9,5 +9,5 @@ class Pemetaan extends Model
 {
     use HasFactory;
     protected $table = 'tb_pemetaan';
-    protected $fillable = ['nama_pemilik', 'dusun', 'blok', 'luas', 'kelas', 'koordinat'];
+    protected $fillable = ['blok', 'kelas', 'koordinat', 'persil'];
 }

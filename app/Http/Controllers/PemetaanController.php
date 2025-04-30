@@ -33,19 +33,16 @@ class PemetaanController extends Controller
     {
         // Validate input data
         $request->validate([
-            'nama_pemilik' => 'required',
-            'dusun' => 'required',
             'blok' => 'required',
-            'luas' => 'required',
+            'persil' => 'required',
             'kelas' => 'required',
             'koordinat' => 'required', // Validasi agar koordinat harus berupa JSON
         ]);
 
+
         Pemetaan::create([
-            'nama_pemilik' => $request->nama_pemilik,
-            'dusun' => $request->dusun,
             'blok' => $request->blok,
-            'luas' => $request->luas,
+            'persil' => $request->persil,
             'kelas' => $request->kelas,
             'koordinat' => $request->koordinat, // Data polygon dari Map
         ]);
@@ -83,21 +80,17 @@ class PemetaanController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'nama_pemilik' => 'required',
-            'dusun' => 'required',
             'blok' => 'required',
-            'luas' => 'required',
             'kelas' => 'required',
+            'persil' => 'required',
             'koordinat' => 'required',
         ]);
 
         $pemetaan = Pemetaan::findOrFail($id);
         $pemetaan->update([
-            'nama_pemilik' => $request->nama_pemilik,
-            'dusun' => $request->dusun,
             'blok' => $request->blok,
-            'luas' => $request->luas,
             'kelas' => $request->kelas,
+            'persil' => $request->persil,
             'koordinat' => $request->koordinat, // Pastikan format tetap JSON
         ]);
 
@@ -109,6 +102,18 @@ class PemetaanController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Temukan pesan berdasarkan ID
+        $pemetaan = Pemetaan::find($id);
+
+        if (!$pemetaan) {
+            // Redirect atau berikan respons jika pesan tidak ditemukan
+            return redirect()->back()->with('error', 'Data pemetaan tidak ditemukan.');
+        }
+
+        // Hapus pesan dari database
+        $pemetaan->delete();
+
+        // Redirect atau berikan respons sesuai kebutuhan
+        return redirect()->back()->with('success', 'Data pemetaan berhasil dihapus.');
     }
 }
