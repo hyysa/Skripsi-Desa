@@ -9,6 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\PetaController;
 use App\Http\Controllers\PemetaanController;
+use App\Http\Controllers\LetterCController;
 
 
 
@@ -163,8 +164,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/administrator/pemetaan', [PemetaanController::class, 'index'])->name('pemetaan.index');
     Route::get('/administrator/tambah-peta', [PemetaanController::class, 'create'])->name('pemetaan.tambah');
     Route::post('/administrator/pemetaan', [PemetaanController::class, 'store'])->name('pemetaan.store');
-    Route::get('/administrator/edit/{id}', [PemetaanController::class, 'edit'])->name('pemetaan.edit');
-    Route::put('/administrator/edit/{id}', [PemetaanController::class, 'update'])->name('pemetaan.update');
+    Route::get('/administrator/edit-pemetaan/{id}', [PemetaanController::class, 'edit'])->name('pemetaan.edit');
+    Route::put('/administrator/edit-pemetaan/{id}', [PemetaanController::class, 'update'])->name('pemetaan.update');
+    //Route Letter C
+    Route::get('/administrator/letterc',    [LetterCController::class, 'index'])->name('letterc.index');
+    Route::get('/administrator/tambah-letterc', [LetterCController::class, 'create'])->name('letterc.tambah');
+    Route::post('/administrator/letterc',   [LetterCController::class, 'store'])->name('letterc.store');
+    Route::get('/administrator/edit-letterc/{id}',   [LetterCController::class, 'edit'])->name('letterc.edit');
+    Route::put('/administrator/edit-letterc/{id}',   [LetterCController::class, 'update'])->name('letterc.update');
+    Route::delete('/administrator/delete-letterc/{id}',   [LetterCController::class, 'destroy'])->name('letterc.delete');
     //Route Logout
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

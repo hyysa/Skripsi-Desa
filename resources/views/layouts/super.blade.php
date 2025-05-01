@@ -64,6 +64,11 @@
                     <span>Pemetaan</span></a>
             </li>
             <li class="nav-item active">
+                <a class="nav-link" href="/administrator/letterc">
+                    <i class="fas fa-fw fa-file"></i>
+                    <span>Letter C</span></a>
+            </li>
+            <li class="nav-item active">
                 <a class="nav-link" href="/administrator/video">
                     <i class="fas fa-fw fa-video"></i>
                     <span>Daftar Video</span></a>
@@ -127,6 +132,26 @@
     <!-- Page level custom scripts -->
     <script src="{{asset('template/js/demo/datatables-demo.js')}}"></script>
  @stack('script')
+ <script>
+    $(document).ready(function(){
+        $('#button-search').click(function(){
+            var query = $('#search-input').val().trim();
+            if(query !== ''){
+                $.ajax({
+                    url: '{{ route("search") }}', // Gunakan URL rute pencarian yang telah Anda buat
+                    method: 'GET',
+                    data: {query: query},
+                    success: function(response){
+                        $('#search-results').html(response);
+                    },
+                    error: function(xhr){
+                        console.log(xhr.responseText);
+                    }
+                });
+            }
+        });
+    });
+</script>
 </body>
 
 </html>
