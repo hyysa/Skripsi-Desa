@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama_pemilik');
             $table->string('persil');
             $table->integer('luas');
+            $table->integer('nomor_letterc');
             $table->string('keterangan');
             $table->timestamps();
         });

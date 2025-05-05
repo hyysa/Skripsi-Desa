@@ -52,6 +52,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Daftar Pemilik</h6>
                 <hr>
                 <a class="btn btn-success" href="{{ route('pemilik.tambah') }}" role="button"><i class="fas fa-file"></i> Tambah Pemilik</a>
+                <a class="btn btn-secondary" href="{{ route('pemilik.cetak') }}" role="button"><i class="fas fa-print"></i> Cetak Rekap Data</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -62,6 +63,7 @@
                                 <th>Nama Pemilik</th>
                                 <th>Persil</th>
                                 <th>Luas</th>
+                                <th>Nomor Letter C</th>
                                 <th>Keterangan</th>
                                 <th>Opsi</th>
                             </tr>
@@ -73,6 +75,7 @@
                                 <td>{{ $item->nama_pemilik }}</td>
                                 <td>{{ $item->persil }}</td>
                                 <td>{{ $item->luas }}</td>
+                                <td>{{ $item->nomor_letterc }}</td>
                                 <td>{{ $item->keterangan }}</td>
                                 <td>
                                     <a class="btn btn-success" href="{{ route('pemilik.edit', $item->id) }}" role="button">Edit</a>
