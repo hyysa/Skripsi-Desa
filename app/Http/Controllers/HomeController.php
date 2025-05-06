@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Berita;
 use App\Models\Video;
+use App\Models\Pemilik;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class HomeController extends Controller
@@ -15,8 +16,9 @@ class HomeController extends Controller
     public function index()
     {
         $berita = Berita::paginate(4);
+        $carousel_berita = Berita::orderBy('created_at', 'desc')->get();
         $video = Video::all();
-        return view('pages.home', ['title' => 'home'], compact('berita', 'video'));
+        return view('pages.home', ['title' => 'home'], compact('berita', 'video', 'carousel_berita'));
     }
 
     /**
@@ -83,5 +85,11 @@ class HomeController extends Controller
 
         // Kembalikan hasil pencarian ke tampilan bersama dengan variabel $query
         return view('pages.search-results', ['title' => 'search-results'], compact('beritaResults', 'query'));
+    }
+
+    public function listPemilik()
+    {
+        $pemilik = Pemilik::all();
+        return view('pages.profil.daftar-pemilik', ['title' => 'daftar-pemilik'], compact('pemilik'));
     }
 }

@@ -98,3 +98,17 @@
 
 </div>
 @endsection
+@push('notifikasi')
+    @if ($errors->any())
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops!',
+                    text: 'Ada data yang belum diisi atau salah, cek kembali ya!',
+                    showConfirmButton: true
+                });
+            });
+        </script>
+    @endif
+@endpush

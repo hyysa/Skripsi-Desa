@@ -9,7 +9,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\PetaController;
 use App\Http\Controllers\PemetaanController;
+use App\Http\Controllers\LetterCRequestController;
 use App\Http\Controllers\LetterCController;
+use App\Http\Controllers\PemilikController;
 
 
 
@@ -31,6 +33,7 @@ Route::get('/search', [HomeController::class, 'search'])->name('search');
 
 Route::get('/berita', [DetailController::class, 'index']);
 Route::get('/berita/{id}', [DetailController::class, 'show'])->name('detail.berita');
+
 
 Route::get('/sejarah', function () {
     return view('pages/profil/sejarah', [
@@ -74,6 +77,8 @@ Route::get('/demografi', function () {
 
 Route::get('/peta', [PetaController::class, 'index']);
 
+Route::get('/daftar-pemilik', [HomeController::class, 'listPemilik'])->name('list.pemilik');
+
 // End Halaman Profile
 
 // Start Halaman Layanan
@@ -111,6 +116,12 @@ Route::get('/surat-pindah-tempat', function () {
 Route::get('/surat-kematian', function () {
     return view('pages/layanan/suratKematian', [
         'title' => 'surat-kematian'
+    ]);
+});
+
+Route::get('/layanan-letterc', function () {
+    return view('pages/layanan/lettercrequest', [
+        'title' => 'layanan-letterc'
     ]);
 });
 
@@ -166,6 +177,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/administrator/pemetaan', [PemetaanController::class, 'store'])->name('pemetaan.store');
     Route::get('/administrator/edit-pemetaan/{id}', [PemetaanController::class, 'edit'])->name('pemetaan.edit');
     Route::put('/administrator/edit-pemetaan/{id}', [PemetaanController::class, 'update'])->name('pemetaan.update');
+    Route::delete('/administrator/delete-pemetaan/{id}', [PemetaanController::class, 'destroy'])->name('pemetaan.delete');
     //Route Letter C
     Route::get('/administrator/letterc',    [LetterCController::class, 'index'])->name('letterc.index');
     Route::get('/administrator/tambah-letterc', [LetterCController::class, 'create'])->name('letterc.tambah');
@@ -173,6 +185,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/administrator/edit-letterc/{id}',   [LetterCController::class, 'edit'])->name('letterc.edit');
     Route::put('/administrator/edit-letterc/{id}',   [LetterCController::class, 'update'])->name('letterc.update');
     Route::delete('/administrator/delete-letterc/{id}',   [LetterCController::class, 'destroy'])->name('letterc.delete');
+    //Request Letter c
+    Route::get('/lettercrequest', [LetterCRequestController::class, 'create'])->name('lettercrequest.create');
+    Route::post('/lettercrequest', [LetterCRequestController::class, 'store'])->name('lettercrequest.store');
+    //Route Request Letter C
+    Route::get('/administrator/requestletterc', [LetterCRequestController::class, 'index'])->name('lettercrequest.index');
+    Route::delete('/administrator/delete-requestletterc/{id}',   [LetterCRequestController::class, 'destroy'])->name('lettercrequest.delete');
+    //Route Pemilik
+    Route::get('/administrator/pemilik', [PemilikController::class, 'index'])->name('pemilik.index');
+    Route::get('/administrator/tambah-pemilik', [PemilikController::class, 'create'])->name('pemilik.tambah');
+    Route::post('/administrator/pemilik', [PemilikController::class, 'store'])->name('pemilik.store');
+    Route::get('/administrator/edit-pemilik/{id}', [PemilikController::class, 'edit'])->name('pemilik.edit');
+    Route::put('/administrator/edit-pemilik/{id}', [PemilikController::class, 'update'])->name('pemilik.update');
+    Route::delete('/administrator/delete-pemilik/{id}', [PemilikController::class, 'destroy'])->name('pemilik.delete');
     //Route Logout
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

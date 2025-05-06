@@ -43,20 +43,12 @@
                             @csrf
                             @method('PUT')
                             <div class="form-group">
-                                <label for="nama_pemilik">Nama Pemilik</label>
-                                <input id="nama_pemilik" type="text" class="form-control" name="nama_pemilik" value="{{ $pemetaan->nama_pemilik }}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="dusun">Dusun</label>
-                                <input id="dusun" type="text" class="form-control" name="dusun" value="{{ $pemetaan->dusun }}" required>
-                            </div>
-                            <div class="form-group">
                                 <label for="blok">Blok</label>
                                 <input id="blok" type="text" class="form-control" name="blok" value="{{ $pemetaan->blok }}" required>
                             </div>
                             <div class="form-group">
-                                <label for="luas">Luas</label>
-                                <input id="luas" type="text" class="form-control" name="luas" value="{{ $pemetaan->luas }}" required>
+                                <label for="persil">No. Persil</label>
+                                <input id="persil" type="text" class="form-control" name="persil" value="{{ $pemetaan->persil }}" required>
                             </div>
                             <div class="form-group">
                                 <label for="kelas">Kelas</label>
@@ -66,7 +58,6 @@
                                     <option value="sp" {{ $pemetaan->kelas == 'sp' ? 'selected' : '' }}>Bangunan / Semi-permanen</option>
                                 </select>
                             </div>
-
                             <div class="form-group">
                                 <label for="koordinat">Koordinat</label>
                                 <textarea class="form-control" id="koordinat" rows="3" name="koordinat" readonly>{{ $pemetaan->koordinat }}</textarea>
@@ -166,3 +157,17 @@
     </div>
 </div>
 @endsection
+@push('notifikasi')
+    @if ($errors->any())
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops!',
+                    text: 'Ada data yang belum diisi atau salah, cek kembali ya!',
+                    showConfirmButton: true
+                });
+            });
+        </script>
+    @endif
+@endpush

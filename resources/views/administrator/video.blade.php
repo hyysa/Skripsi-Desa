@@ -1,5 +1,5 @@
 @extends('layouts.super')
-@section('title', 'Daftar Berita | Administrator')
+@section('title', 'Daftar Video | Administrator')
 @section('content')
 <div id="content">
 
@@ -46,11 +46,6 @@
 
         <!-- Page Heading -->
         <h1 class="h3 mb-2 text-gray-800">Daftar Video</h1>
-        @if (session()->has('success'))
-            <div class="alert alert-success" role="alert">
-                {{ session('success') }}
-            </div>
-        @endif
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -76,10 +71,10 @@
                                 <td>{{ $item->judul }}</td>
                                 <td>{{ $item->link_ytb }}</td>
                                 <td>
-                                    <form method="post" action="{{ route('video.delete', $item->id) }}">
+                                    <form id="form-hapus-{{ $item->id }}" method="post" action="{{ route('video.delete', $item->id) }}">
                                         @csrf
                                         @method('delete')
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this data?')">Hapus</button>
+                                        <button type="button" class="btn btn-danger" onclick="konfirmasiHapus({{ $item->id }})">Hapus</button>
                                     </form>
                                 </td>
                             </tr>
@@ -95,3 +90,18 @@
 
 </div>
 @endsection
+@push('message')
+@if (session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        });
+    </script>
+@endif
+@endpush

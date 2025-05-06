@@ -18,26 +18,27 @@
 @endsection
 
 @section('content')
+ 
     {{-- Start Carousel --}}
     <div class="card mb-4">
         <div id="carouselExampleCaptions" class="carousel slide carousel-sm" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="https://dpmpd.landakkab.go.id/asset/foto_desa/foto-desa.jpg" class="d-block w-100"
-                         alt="First slide">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
-                        <p>Some representative placeholder content for the first slide.</p>
+                @foreach($carousel_berita->take(3) as $key => $item)
+                    <div class="carousel-item {{ $key == 0 ? 'active' : '' }}" data-bs-interval="3000">
+                        <img src="{{ asset('storage/' . $item->dokumentasi) }}" class="d-block w-100" alt="{{ $item->judul }}">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5 style="text-shadow: 3px 3px 5px rgba(0,0,0,0.7); font-weight: bold">{{ Str::limit($item->judul, 100) }}</h5>
+                            <hr style="height: 10px">
+                            <p style="text-shadow: 3px 3px 5px rgba(0,0,0,0.7);">{{ Str::limit($item->isi_berita, 100) }}</p>
+                        </div>
                     </div>
-                </div>
-                </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide="prev">
+                @endforeach
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide="next">
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>

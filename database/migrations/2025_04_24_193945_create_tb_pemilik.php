@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_pemetaan', function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->string('blok', 255);
-            $table->string('kelas', 255);
-            $table->string('persil', 255);
-            $table->text('koordinat');
+        Schema::create('tb_pemilik', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama_pemilik');
+            $table->string('persil');
+            $table->integer('luas');
+            $table->string('keterangan');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_pemetaan');
+        Schema::dropIfExists('tb_pemilik');
     }
 };

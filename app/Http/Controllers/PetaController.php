@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pemetaan;
+use Illuminate\Support\Facades\DB;
 
 class PetaController extends Controller
 {
@@ -12,7 +13,21 @@ class PetaController extends Controller
      */
     public function index()
     {
-        $peta = Pemetaan::all(); // Ambil semua data pemetaan dari database
+        $peta = Pemetaan::select(
+            'tb_pemetaan.*',
+            DB::raw('GROUP_CONCAT(pemilik.nama_pemilik SEPARATOR ", ") as nama_pemilik')
+        )
+            ->leftJoin('tb_pemilik as pemilik', 'tb_pemetaan.persil', '=', 'pemilik.persil')
+            ->groupBy(
+                'tb_pemetaan.id',          // Kolom ID
+                'tb_pemetaan.blok',        // Kolom blok
+                'tb_pemetaan.kelas',       // Kolom kelas
+                'tb_pemetaan.persil',      // Kolom persil
+                'tb_pemetaan.koordinat',   // Kolom koordinat
+                'tb_pemetaan.created_at',  // Kolom created_at
+                'tb_pemetaan.updated_at'   // Kolom updated_at jika ada
+            )
+            ->get();
         return view('pages.profil.peta', ['title' => 'peta'], compact('peta'));
     }
 

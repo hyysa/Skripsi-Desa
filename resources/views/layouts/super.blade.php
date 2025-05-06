@@ -67,6 +67,14 @@
                 <a class="nav-link" href="/administrator/letterc">
                     <i class="fas fa-fw fa-file"></i>
                     <span>Letter C</span></a>
+            <li class="nav-item active">
+                <a class="nav-link" href="/administrator/requestletterc">
+                    <i class="fas fa-envelope "></i>
+                    <span>Permohonan Letter C</span></a>
+
+                <a class="nav-link" href="/administrator/pemilik">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Pemilik Tanah</span></a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/administrator/video">
@@ -152,6 +160,27 @@
         });
     });
 </script>
+    @stack('script')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @stack('message')
+    <script>
+        function konfirmasiHapus(id) {
+            Swal.fire({
+                title: 'Yakin mau hapus?',
+                text: "Data tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('form-hapus-' + id).submit();
+                }
+            });
+        }
+    </script>
+    @stack('notifikasi')
 </body>
 
 </html>
