@@ -78,6 +78,8 @@
                             <li><a class="dropdown-item clr-white-900 bg-change {{ $title === 'surat-kematian' ? 'header-active' : '' }}"
                                     href="/surat-kematian"> SURAT KEMATIAN </a>
                             </li>
+                            <li><a class="dropdown-item clr-white-900 bg-change {{ $title === 'layanan-letterc' ? 'header-active' : '' }}"
+                                href="/layanan-letterc"> LETTER C </a></li>
                             <li><a class="dropdown-item clr-white-900 bg-change {{ $title === 'boro-nikah' ? 'header-active' : '' }}"
                                     href="/boro-nikah"> BORO NIKAH </a></li>
                             <li><a class="dropdown-item clr-white-900 bg-change {{ $title === 'ijin-usaha' ? 'header-active' : '' }}"

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Berita;
 use App\Models\Video;
+use App\Models\Pemilik;
 
 class AdminController extends Controller
 {
@@ -15,7 +16,8 @@ class AdminController extends Controller
     {
         $berita = Berita::all();
         $video =  Video::all();
-        return view('administrator.dashboard', compact('berita', 'video'));
+        $pemilik = Pemilik::all();
+        return view('administrator.dashboard', compact('berita', 'video', 'pemilik'));
     }
 
     /**

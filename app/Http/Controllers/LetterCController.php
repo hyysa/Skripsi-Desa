@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pemetaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\LetterC;
@@ -21,7 +20,7 @@ class LetterCController extends Controller
      */
     public function create()
     {
-        $query = Letterc::all(); // Ambil semua data pemetaan dari database
+        $query = Letterc::all(); // Ambil semua data dari database
         return view('administrator.tambah-letterc', compact('query'));
     }
 /**

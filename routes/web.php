@@ -189,7 +189,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/lettercrequest', [LetterCRequestController::class, 'create'])->name('lettercrequest.create');
     Route::post('/lettercrequest', [LetterCRequestController::class, 'store'])->name('lettercrequest.store');
     //Route Request Letter C
-    Route::get('/administrator/requestletterc', [LetterCRequestController::class, 'index'])->name('lettercrequest.index');
+    Route::get('/administrator/requestletterc', [LetterCRequestController::class, 'index'])->name('requestletterc.index');
     Route::delete('/administrator/delete-requestletterc/{id}',   [LetterCRequestController::class, 'destroy'])->name('lettercrequest.delete');
     //Route Pemilik
     Route::get('/administrator/pemilik', [PemilikController::class, 'index'])->name('pemilik.index');
