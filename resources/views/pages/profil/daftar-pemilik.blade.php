@@ -16,6 +16,7 @@
                 <th>Nama Pemilik</th>
                 <th>Persil</th>
                 <th>Luas</th>
+                <th>No. Letter-C</th>
                 <th>Keterangan</th>
             </tr>
         </thead>
@@ -26,6 +27,7 @@
                 <td>{{ $item->nama_pemilik }}</td>
                 <td>{{ $item->persil }}</td>
                 <td>{{ $item->luas }}</td>
+                <td><b>{{ $item->nomor_letterc }}</b></td>
                 <td>{{ $item->keterangan }}</td>
             </tr>
             @endforeach

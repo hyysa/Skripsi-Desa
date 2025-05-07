@@ -37,6 +37,7 @@ class PemilikController extends Controller
             'nama_pemilik' => 'required',
             'persil' => 'required',
             'luas' => 'required',
+            'nomor_letterc' => 'required',
             'keterangan' => 'required',
         ]);
 
@@ -44,6 +45,7 @@ class PemilikController extends Controller
             'nama_pemilik' => $request->nama_pemilik,
             'persil' => $request->persil,
             'luas' => $request->luas,
+            'nomor_letterc' => $request->nomor_letterc,
             'keterangan' => $request->keterangan,
         ]);
         return redirect()->route('pemilik.index')->with('success', 'Data pemilik berhasil ditambahkan.');
@@ -76,6 +78,7 @@ class PemilikController extends Controller
             'nama_pemilik' => 'required',
             'persil' => 'required',
             'luas' => 'required',
+            'nomor_letterc' => 'required',
             'keterangan' => 'required',
         ]);
 
@@ -84,6 +87,7 @@ class PemilikController extends Controller
             'nama_pemilik' => $request->nama_pemilik,
             'persil' => $request->persil,
             'luas' => $request->luas,
+            'nomor_letterc' => $request->nomor_letterc,
             'keterangan' => $request->keterangan,
         ]);
 
@@ -108,5 +112,11 @@ class PemilikController extends Controller
 
         // Redirect atau berikan respons sesuai kebutuhan
         return redirect()->back()->with('success', 'Data pemilik tanah berhasil dihapus.');
+    }
+
+    public function cetak()
+    {
+        $pemilik = Pemilik::all();
+        return view('administrator.cetak', compact('pemilik'));
     }
 }

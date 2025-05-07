@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Admin',
                 'email' => 'admin@pandanarum.com',
-                'password' => Hash::make('desa#5758'),
+                'password' => Hash::make('!Des@#5758'),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

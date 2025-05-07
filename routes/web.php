@@ -198,6 +198,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/administrator/edit-pemilik/{id}', [PemilikController::class, 'edit'])->name('pemilik.edit');
     Route::put('/administrator/edit-pemilik/{id}', [PemilikController::class, 'update'])->name('pemilik.update');
     Route::delete('/administrator/delete-pemilik/{id}', [PemilikController::class, 'destroy'])->name('pemilik.delete');
+    Route::get('/administrator/cetak', [PemilikController::class, 'cetak'])->name('pemilik.cetak');
     //Route Logout
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

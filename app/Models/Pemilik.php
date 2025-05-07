@@ -15,6 +15,7 @@ class Pemilik extends Model
         'nama_pemilik',
         'persil',
         'luas',
+        'nomor_letterc',
         'keterangan',
     ];
 }

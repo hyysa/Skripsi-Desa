@@ -83,6 +83,10 @@
                                 <input id="luas" type="number" class="form-control" name="luas" value="{{ $pemilik->luas }}" required>
                             </div>
                             <div class="form-group">
+                              <label for="nomor_letterc">No. Letter C</label>
+                              <input type="number" name="nomor_letterc" class="form-control" id="nomor_letterc" value="{{ $pemilik->nomor_letterc }}" placeholder="Masukkan Keterangan" required>
+                            </div>
+                            <div class="form-group">
                               <label for="keterangan">Keterangan</label>
                               <input type="text" name="keterangan" class="form-control" id="keterangan" value="{{ $pemilik->keterangan }}" placeholder="Masukkan Keterangan" required>
                             </div>

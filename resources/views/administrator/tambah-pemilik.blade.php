@@ -80,8 +80,12 @@
                                 <input id="luas" type="number" class="form-control" name="luas" required>
                             </div>
                             <div class="form-group">
+                              <label for="nomor_letterc">No. Letter C</label>
+                              <input type="number" name="nomor_letterc" class="form-control" id="nomor_letterc" placeholder="Masukkan nomor_letterc" required>
+                            </div>
+                            <div class="form-group">
                               <label for="keterangan">Keterangan</label>
-                              <input type="text" name="keterangan" class="form-control" id="keterangan" placeholder="Masukkan Keterangan" required>
+                              <input type="text" name="keterangan" class="form-control" id="keterangan" placeholder="Masukkan keterangan" required>
                             </div>
                             <br>
                             <button type="submit" class="btn btn-primary">Tambah</button>

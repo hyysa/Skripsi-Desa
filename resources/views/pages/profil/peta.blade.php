@@ -29,89 +29,148 @@
                         <a href="{{ route('list.pemilik')}}" class="btn btn-outline-primary btn-sm">Detail Pemilik</a>
                     </div>
                     <div class="card-body">
+                        <div class="mb-3">
+                            <input type="text" id="search-nama" class="form-control" placeholder="Cari nama pemilik tanah...">
+                        </div>
                         <div id="map"></div>
                     </div>
                 </div>
             </div>
         </div>
-    @push('script1')
-    <script>
-         mapboxgl.accessToken = 'pk.eyJ1IjoiaGlsZ2FzYXRyaWEiLCJhIjoiY203dzdvNDJxMDJuaDJxcHRnbGV1emUzYyJ9.LJBgThSO_DyKtLl2SizjxA';
-
-        // Inisialisasi Peta Mapbox dalam Leaflet
-        var map = L.map('map').setView([-8.183608213057614, 112.19258084611654], 15);
-
-        L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v12/tiles/{z}/{x}/{y}?access_token=' + mapboxgl.accessToken, {
-            attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a>',
-            tileSize: 512,
-            zoomOffset: -1,
-        }).addTo(map);
-
-        // Fungsi untuk warna acak
-        function getRandomColor() {
-            var letters = '0123456789ABCDEF';
-            var color = '#';
-            for (var i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
-
-        // Data dari Laravel (pastikan dikirim dari controller)
-        var peta = @json($peta);
-
-        // Loop untuk menampilkan semua poligon
-        peta.forEach(function(item) {
-            var cords = typeof item.koordinat === 'string' ? JSON.parse(item.koordinat) : item.koordinat; // Pastikan koordinat adalah string JSON yang valid
-
-            if (cords.type === "Polygon") {
-                var coordinates = cords.coordinates[0]; // Ambil koordinat pertama dari array
-
-                // Ubah format koordinat agar sesuai dengan Leaflet
-                var polygonCoords = coordinates.map(coord => [coord[1], coord[0]]);
-
-                // Tambahkan poligon ke peta
-                var polygon = L.polygon(polygonCoords, {
-                    color: getRandomColor(),
-                    fillColor: getRandomColor(),
-                    fillOpacity: 0.6
-                }).addTo(map);
-
-                // **Menghitung titik tengah (center) menggunakan Turf.js**
-                if (center && center.geometry && center.geometry.coordinates) {
-                var center = turf.center(cords);
-                var centerCoords = center.geometry.coordinates;
-                L.marker([centerCoords[1], centerCoords[0]], {
-                    icon: L.divIcon({
-                        className: 'custom-marker',
-                        iconSize: [10, 10],
-                        html: '<div style="background-color:' + getRandomColor() + '; width:12px; height:12px; border-radius:50%;"></div>'
-                    })
-                }).addTo(map);
-                } else {
-                    console.log("Center point tidak valid untuk:", item);
+        @push('script1')
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1IjoiaGlsZ2FzYXRyaWEiLCJhIjoiY203dzdvNDJxMDJuaDJxcHRnbGV1emUzYyJ9.LJBgThSO_DyKtLl2SizjxA';
+        
+            var map = L.map('map').setView([-8.1836, 112.1925], 15);
+        
+            L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v12/tiles/256/{z}/{x}/{y}@2x?access_token=' + mapboxgl.accessToken, {
+                attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a>',
+                tileSize: 256,
+            }).addTo(map);
+        
+            // Icon default dan highlight
+            var defaultIcon = L.icon({
+                iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                shadowSize: [41, 41]
+            });
+        
+            var highlightIcon = L.icon({
+                iconUrl: 'https://maps.gstatic.com/mapfiles/ms2/micons/blue-dot.png',
+                iconSize: [32, 32],
+                iconAnchor: [16, 32],
+                popupAnchor: [0, -28]
+            });
+        
+            function getRandomColor() {
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
                 }
-                // var center = turf.center(cords);
-                // var centerCoords = center.geometry.coordinates;
-                // var markerCenter = L.marker([centerCoords[1], centerCoords[0]], {
-                //     icon: L.divIcon({
-                //         className: 'custom-marker',
-                //         iconSize: [10, 10],
-                //         html: '<div style="background-color:' + getRandomColor() + '; width:12px; height:12px; border-radius:50%;"></div>'
-                //     })
-                // }).addTo(map);
-
-                // Tambahkan Popup atribut
-                polygon.bindPopup(`
-                    <b>Blok:</b> ${item.blok}<br>
-                    <b>Kelas:</b> ${item.kelas}<br>
-                    <b>Persil:</b> ${item.persil}<br>
-                    <b>Nama Pemilik:</b> ${item.nama_pemilik}
-                `);
+                return color;
             }
-        });
-    </script>
-    @endpush
+        
+            var peta = @json($peta);
+            var layerGroup = L.layerGroup().addTo(map);
+            var searchData = [];
+        
+            peta.forEach(function (item) {
+                var cords = typeof item.koordinat === 'string' ? JSON.parse(item.koordinat) : item.koordinat;
+        
+                if (cords.type === "Polygon") {
+                    var coordinates = cords.coordinates[0];
+                    var polygonCoords = coordinates.map(coord => [coord[1], coord[0]]);
+        
+                    var color = getRandomColor();
+                    var polygon = L.polygon(polygonCoords, {
+                        color: color,
+                        fillColor: color,
+                        fillOpacity: 0.5
+                    }).addTo(layerGroup);
+        
+                    var popupContent = `
+                        <b>Blok:</b> ${item.blok || 'N/A'}<br>
+                        <b>Kelas:</b> ${item.kelas || 'N/A'}<br>
+                        <b>Persil:</b> ${item.persil || 'N/A'}<br>
+                        <b>Nama Pemilik:</b> ${item.nama_pemilik || 'Tidak Diketahui'}
+                    `;
+        
+                    polygon.bindPopup(popupContent);
+        
+                    var center = turf.center(cords);
+                    if (center && center.geometry && center.geometry.coordinates) {
+                        var centerCoords = center.geometry.coordinates;
+        
+                        var marker = L.marker([centerCoords[1], centerCoords[0]], {
+                            icon: defaultIcon,
+                            title: item.nama_pemilik
+                        }).bindPopup(popupContent);
+        
+                        marker.defaultIcon = defaultIcon;
+        
+                        layerGroup.addLayer(marker);
+                        searchData.push(marker);
+                    }
+                }
+            });
+        
+            const inputSearch = document.getElementById('search-nama');
+        
+            inputSearch.addEventListener('input', function () {
+                const keyword = inputSearch.value.toLowerCase();
+        
+                layerGroup.clearLayers(); // Hapus semua marker dan polygon
+        
+                // Tambah ulang polygon (tidak ikut pencarian, hanya ditampilkan tetap)
+                peta.forEach(function (item) {
+                    var cords = typeof item.koordinat === 'string' ? JSON.parse(item.koordinat) : item.koordinat;
+        
+                    if (cords.type === "Polygon") {
+                        var coordinates = cords.coordinates[0];
+                        var polygonCoords = coordinates.map(coord => [coord[1], coord[0]]);
+                        var color = getRandomColor();
+        
+                        var polygon = L.polygon(polygonCoords, {
+                            color: color,
+                            fillColor: color,
+                            fillOpacity: 0.5
+                        });
+                        layerGroup.addLayer(polygon);
+                    }
+                });
+        
+                if (keyword === "") {
+                    // Jika kosong, tampilkan semua marker tanpa popup
+                    searchData.forEach(function (marker) {
+                        marker.setIcon(marker.defaultIcon);
+                        marker.closePopup();
+                        layerGroup.addLayer(marker);
+                    });
+                    map.setView([-8.1836, 112.1925], 15);
+                    return;
+                }
+        
+                let found = false;
+        
+                searchData.forEach(function (marker) {
+                    const title = marker.options.title.toLowerCase();
+        
+                    if (title.includes(keyword)) {
+                        marker.setIcon(highlightIcon);
+                        layerGroup.addLayer(marker); // Tambahkan dulu marker-nya
+                        map.setView(marker.getLatLng(), 17);
+                        setTimeout(() => marker.openPopup(), 100); // Buka popup setelah ditambahkan
+                        found = true;
+                    }
+                });
+            });
+        </script>
+        
+        @endpush
     </div>
 @endsection
 
