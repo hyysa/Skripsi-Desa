@@ -112,4 +112,23 @@ class LetterCController extends Controller
         // Redirect atau berikan respons sesuai kebutuhan
         return redirect()->back()->with('success', 'Data berhasil dihapus.');
     }
+
+    public function cetak()
+    {
+        $letterc = LetterC::all();
+        return view('administrator.cetak-letterc', compact('letterc'));
+       
+    }
+
+    public function cetakdata(string $id)
+    {
+        $letterc = LetterC::find($id);
+
+    if (!$letterc) {
+        return redirect()->back()->with('error', 'Data tidak ditemukan');
+    }
+
+    return view('administrator.cetak-data', compact('letterc'));
+        
+    }
 }

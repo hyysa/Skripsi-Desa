@@ -56,6 +56,8 @@
                 <h2>Data Letter C</h2>
                         <a class="btn btn-success" href="{{ route('letterc.tambah') }}" role="button">
                             <i class="fa-solid fa-file-circle-plus"></i>Tambah Data</a>
+                        <a class="btn btn-secondary" href="{{ route('letterc.cetak') }}" role="button">
+                            <i class="fas fa-print"></i> Cetak Rekap Data</a>
                     </div>
             <div class="card-body">
                 {{-- <form method="GET" action="{{ route('letterc.index') }}" class="row mb-4 g-2">
@@ -106,12 +108,13 @@
                                     <td>{{ $item->kelas_desa }}</td>
                                     <td>{{ $item->jenis_tanah }}</td>
                                     <td class="d-flex gap-2">
-                                        <a href="{{ route('letterc.edit', $item->id) }}" class="btn btn-warning btn-sm"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
+                                        <a href="{{ route('letterc.edit', $item->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-pen"></i> </a>&nbsp;
                                         <form method="post" action="{{ route('letterc.delete', $item->id) }}">
                                             @csrf
                                             @method('delete')
                                             <button type="submit" onclick="return confirm('Yakin hapus data ini?')" class="btn btn-danger btn-sm">
-                                                <i class="fa-solid fa-trash"></i>Hapus</button>
+                                                <i class="fas fa-trash"></i> </button>
+                                        <a href="{{ route('letterc.cetakdata', $item->id) }}" class="btn btn-success btn-sm"><i class="fas fa-print"></i> </a>
                                         </form>
                                     </td>
                                 </tr>

@@ -185,6 +185,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/administrator/edit-letterc/{id}',   [LetterCController::class, 'edit'])->name('letterc.edit');
     Route::put('/administrator/edit-letterc/{id}',   [LetterCController::class, 'update'])->name('letterc.update');
     Route::delete('/administrator/delete-letterc/{id}',   [LetterCController::class, 'destroy'])->name('letterc.delete');
+    Route::get('/administrator/cetak-letterc', [LetterCController::class, 'cetak'])->name('letterc.cetak');
+    Route::get('/administrator/cetak-data/{id}', [LetterCController::class, 'cetakdata'])->name('letterc.cetakdata');
     //Request Letter c
     Route::get('/lettercrequest', [LetterCRequestController::class, 'create'])->name('lettercrequest.create');
     Route::post('/lettercrequest', [LetterCRequestController::class, 'store'])->name('lettercrequest.store');

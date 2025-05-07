@@ -6,10 +6,6 @@
     <p>Note: Harap isi formulir dengan data asli!, Admin akan memverivikasi identitas melalui 
         nomor yang anda inputkan, Setelah proses verifikasi selesai data letter c akan dikirim melalui WhastApp.
     </p>
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
     <form action="{{ route('lettercrequest.store') }}" method="POST">
         @csrf
         <div class="mb-3">
@@ -28,3 +24,18 @@
     </form>
 </div>
 @endsection
+@push('message')
+@if (session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        });
+    </script>
+@endif
+@endpush

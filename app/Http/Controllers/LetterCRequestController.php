@@ -10,30 +10,26 @@ class LetterCRequestController extends Controller
 {
     public function index()
     {
-        $lettercreq = LettercRequest ::all();
+        $lettercreq = LettercRequest::all();
         return view('administrator.requestletterc', compact('lettercreq'));
     }
 
     public function create()
     {
-        return view('layanan.lettercrequest');
+        return view('pages.layanan.lettercrequest');
     }
 
     public function store(Request $request)
     {
-       // Validate input data
-         $request->validate([
+        $request->validate([
             'nama_pemohon' => 'required',
             'nohp' => 'required',
             'an_letterc' => 'required',
         ]);
-
-        LettercRequest::create([
-            'nama_pemohon' => $request->nama_pemohon,
-            'nohp' => $request->nohp,
-            'an_letterc' => $request->an_letterc,
-        ]);
-        return redirect()->route('lettercrequest.store')->with('success', 'Permohonan Anda Telah Dibuat, Anda akan dihubungi melalui WhasApp');
+    
+        LettercRequest::create($request->only('nama_pemohon', 'nohp', 'an_letterc'));
+    
+        return redirect()->back()->with('success', 'Permohonan Anda Telah Dibuat, Anda akan dihubungi melalui WhatsApp');
     }
 
        /**

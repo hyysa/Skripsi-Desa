@@ -81,7 +81,7 @@
                                             @csrf
                                             @method('delete')
                                             <button type="submit" onclick="return confirm('Yakin hapus data ini?')" class="btn btn-danger btn-sm">
-                                                <i class="fa-solid fa-trash"></i>Hapus</button>
+                                                <i class="fas fa-trash"></i> Hapus</button>
                                         </form>
                                     </td>
                                 </tr>

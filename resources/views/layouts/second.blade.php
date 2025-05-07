@@ -99,6 +99,7 @@
     <script src="{{asset('template/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
     @stack('script1')
     @stack('table')
+    @stack('message')
     <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
