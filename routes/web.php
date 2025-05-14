@@ -191,8 +191,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/administrator/delete-letterc/{id}',   [LetterCController::class, 'destroy'])->name('letterc.delete');
     Route::get('/administrator/cetak-letterc', [LetterCController::class, 'cetak'])->name('letterc.cetak');
     Route::get('/administrator/cetak-data/{id}', [LetterCController::class, 'cetakdata'])->name('letterc.cetakdata');
-
-
+    //request
+    Route::get('/administrator/requestletterc', [LetterCRequestController::class, 'index'])->name('lettercrequest.index');
+    Route::delete('/administrator/delete-letterc-request/{id}', [LetterCRequestController::class, 'destroy'])->name('lettercrequest.delete');
     //Route Pemilik
     Route::get('/administrator/pemilik', [PemilikController::class, 'index'])->name('pemilik.index');
     Route::get('/administrator/tambah-pemilik', [PemilikController::class, 'create'])->name('pemilik.tambah');
