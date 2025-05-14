@@ -83,6 +83,10 @@ Route::get('/daftar-pemilik', [HomeController::class, 'listPemilik'])->name('lis
 
 // Start Halaman Layanan
 
+//Request Letter c
+Route::get('/lettercrequest', [LetterCRequestController::class, 'create'])->name('lettercrequest.create');
+Route::post('/lettercrequest', [LetterCRequestController::class, 'store'])->name('lettercrequest.store');
+
 Route::get('/surat-keterangan-umum', function () {
     return view('pages/layanan/suratKeteranganUmum', [
         'title' => 'surat-keterangan-umum'
@@ -187,12 +191,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/administrator/delete-letterc/{id}',   [LetterCController::class, 'destroy'])->name('letterc.delete');
     Route::get('/administrator/cetak-letterc', [LetterCController::class, 'cetak'])->name('letterc.cetak');
     Route::get('/administrator/cetak-data/{id}', [LetterCController::class, 'cetakdata'])->name('letterc.cetakdata');
-    //Request Letter c
-    Route::get('/lettercrequest', [LetterCRequestController::class, 'create'])->name('lettercrequest.create');
-    Route::post('/lettercrequest', [LetterCRequestController::class, 'store'])->name('lettercrequest.store');
-    //Route Request Letter C
-    Route::get('/administrator/requestletterc', [LetterCRequestController::class, 'index'])->name('requestletterc.index');
-    Route::delete('/administrator/delete-requestletterc/{id}',   [LetterCRequestController::class, 'destroy'])->name('lettercrequest.delete');
+
+
     //Route Pemilik
     Route::get('/administrator/pemilik', [PemilikController::class, 'index'])->name('pemilik.index');
     Route::get('/administrator/tambah-pemilik', [PemilikController::class, 'create'])->name('pemilik.tambah');
