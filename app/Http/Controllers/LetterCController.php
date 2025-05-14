@@ -4,18 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\LetterC;
+use App\Models\Letterc;
 
 
 class LetterCController extends Controller
 {
     public function index(Request $request)
-{
-    $letterc = LetterC::all();
-    return view('administrator.letterc', compact('letterc'));
-}
+    {
+        $letterc = LetterC::all();
+        return view('administrator.letterc', compact('letterc'));
+    }
 
-/**
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -23,7 +23,7 @@ class LetterCController extends Controller
         $query = Letterc::all(); // Ambil semua data dari database
         return view('administrator.tambah-letterc', compact('query'));
     }
-/**
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -80,7 +80,7 @@ class LetterCController extends Controller
             'jenis_tanah' => 'required',
         ]);
 
-        $query = Letterc::find ($id);
+        $query = Letterc::find($id);
         $query->update([
             'nomor_letterc' => $request->nomor_letterc,
             'nomor_persil' => $request->nomor_persil,
@@ -117,18 +117,16 @@ class LetterCController extends Controller
     {
         $letterc = LetterC::all();
         return view('administrator.cetak-letterc', compact('letterc'));
-       
     }
 
     public function cetakdata(string $id)
     {
         $letterc = LetterC::find($id);
 
-    if (!$letterc) {
-        return redirect()->back()->with('error', 'Data tidak ditemukan');
-    }
+        if (!$letterc) {
+            return redirect()->back()->with('error', 'Data tidak ditemukan');
+        }
 
-    return view('administrator.cetak-data', compact('letterc'));
-        
+        return view('administrator.cetak-data', compact('letterc'));
     }
 }

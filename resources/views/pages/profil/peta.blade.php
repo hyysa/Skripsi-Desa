@@ -25,7 +25,7 @@
             <div class="col-md-12">
                 <div class="card map-container">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <span>Pemetaan Blok dan Persil Desa Pandanarum</span>
+                        <span>Pemetaan Blok dan Persil Desa Pandanarum </span>&nbsp;
                         <a href="{{ route('list.pemilik')}}" class="btn btn-outline-primary btn-sm">Detail Pemilik</a>
                     </div>
                     <div class="card-body">
