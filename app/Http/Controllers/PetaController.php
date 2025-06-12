@@ -13,19 +13,21 @@ class PetaController extends Controller
      */
     public function index()
     {
-        $peta = Pemetaan::select(
-            'tb_pemetaan.*',
-            DB::raw('GROUP_CONCAT(pemilik.nama_pemilik SEPARATOR ", ") as nama_pemilik')
-        )
-            ->leftJoin('tb_pemilik as pemilik', 'tb_pemetaan.persil', '=', 'pemilik.persil')
+        $peta = DB::table('tb_pemetaan')
+            ->leftJoin('tb_pemilik_tanah', 'tb_pemetaan.id_pemetaan', '=', 'tb_pemilik_tanah.id_pemetaan')
+            ->leftJoin('tb_pemilik', 'tb_pemilik.id_pemilik', '=', 'tb_pemilik_tanah.id_pemilik')
+            ->select(
+                'tb_pemetaan.*',
+                DB::raw('GROUP_CONCAT(tb_pemilik.nama_pemilik SEPARATOR ", ") as nama_pemilik')
+            )
             ->groupBy(
-                'tb_pemetaan.id',          // Kolom ID
-                'tb_pemetaan.blok',        // Kolom blok
-                'tb_pemetaan.kelas',       // Kolom kelas
-                'tb_pemetaan.persil',      // Kolom persil
-                'tb_pemetaan.koordinat',   // Kolom koordinat
-                'tb_pemetaan.created_at',  // Kolom created_at
-                'tb_pemetaan.updated_at'   // Kolom updated_at jika ada
+                'tb_pemetaan.id_pemetaan',
+                'tb_pemetaan.blok',
+                'tb_pemetaan.kelas',
+                'tb_pemetaan.persil',
+                'tb_pemetaan.koordinat',
+                'tb_pemetaan.created_at',
+                'tb_pemetaan.updated_at'
             )
             ->get();
         return view('pages.profil.peta', ['title' => 'peta'], compact('peta'));

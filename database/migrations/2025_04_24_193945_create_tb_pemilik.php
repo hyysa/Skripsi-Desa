@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tb_pemilik', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id_pemilik')->unique();
             $table->string('nama_pemilik');
-            $table->string('persil');
             $table->integer('luas');
             $table->integer('nomor_letterc');
             $table->string('keterangan');

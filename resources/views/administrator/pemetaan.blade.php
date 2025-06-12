@@ -75,11 +75,11 @@
                                 <td>{{ $item->kelas }}</td>
                                 <td>{{ json_encode($item->koordinat) }}</td>
                                 <td>
-                                    <a class="btn btn-success" href="{{ route('pemetaan.edit', $item->id) }}" role="button">Edit</a>
-                                    <form id="form-hapus-{{ $item->id }}" method="post" action="{{ route('pemetaan.delete', $item->id) }}">
+                                    <a class="btn btn-success" href="{{ route('pemetaan.edit', $item->id_pemetaan) }}" role="button">Edit</a>
+                                    <form id="form-hapus-{{ $item->id_pemetaan }}" method="post" action="{{ route('pemetaan.delete', $item->id_pemetaan) }}">
                                         @csrf
                                         @method('delete')
-                                        <button type="button" class="btn btn-danger" onclick="konfirmasiHapus({{ $item->id }})">Hapus</button>
+                                        <button type="button" class="btn btn-danger" onclick="konfirmasiHapus({{ $item->id_pemetaan }})">Hapus</button>
                                     </form>
                                 </td>
                             </tr>

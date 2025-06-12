@@ -73,16 +73,20 @@
                             <tr>
                                 <th scope="row">{{$loop->iteration}}</th>
                                 <td>{{ $item->nama_pemilik }}</td>
-                                <td>{{ $item->persil }}</td>
+                                <td>
+                                    @foreach ($item->pemetaan as $p)
+                                        {{ $p->persil }}<br>
+                                    @endforeach
+                                </td>
                                 <td>{{ $item->luas }}</td>
                                 <td>{{ $item->nomor_letterc }}</td>
                                 <td>{{ $item->keterangan }}</td>
                                 <td>
-                                    <a class="btn btn-success" href="{{ route('pemilik.edit', $item->id) }}" role="button">Edit</a>
-                                    <form id="form-hapus-{{ $item->id }}" method="post" action="{{ route('pemilik.delete', $item->id) }}">
+                                    <a class="btn btn-success" href="{{ route('pemilik.edit', $item->id_pemilik) }}" role="button">Edit</a>
+                                    <form id="form-hapus-{{ $item->id_pemilik }}" method="post" action="{{ route('pemilik.delete', $item->id_pemilik) }}">
                                         @csrf
                                         @method('delete')
-                                        <button type="button" class="btn btn-danger" onclick="konfirmasiHapus({{ $item->id }})">Hapus</button>
+                                        <button type="button" class="btn btn-danger" onclick="konfirmasiHapus({{ $item->id_pemilik }})">Hapus</button>
                                     </form>
                                 </td>
                             </tr>

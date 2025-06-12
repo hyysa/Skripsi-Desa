@@ -60,39 +60,46 @@
                     </div>
                     <!-- Card Body -->
                     <div class="card-body">
-                        <form method="post" action="{{ route('pemilik.update', $pemilik->id) }}" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-                            <div class="form-group">
-                              <label for="nama_pemilik">Nama Pemilik</label>
-                              <input type="text" name="nama_pemilik" class="form-control" id="nama_pemilik" value="{{ $pemilik->nama_pemilik }}" placeholder="Masukkan Nama Pemilik" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="persil">No. Persil</label>
-                                <select id="persil" class="form-control" name="persil" required>
-                                    <option value="" disabled>Pilih Persil</option>
-                                    @foreach($pemetaan as $item)
-                                        <option value="{{ $item->persil }}" {{ $item->persil == $pemilik->persil ? 'selected' : '' }}>
-                                            {{ $item->persil }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="luas">Luas</label>
-                                <input id="luas" type="number" class="form-control" name="luas" value="{{ $pemilik->luas }}" required>
-                            </div>
-                            <div class="form-group">
-                              <label for="nomor_letterc">No. Letter C</label>
-                              <input type="number" name="nomor_letterc" class="form-control" id="nomor_letterc" value="{{ $pemilik->nomor_letterc }}" placeholder="Masukkan Keterangan" required>
-                            </div>
-                            <div class="form-group">
-                              <label for="keterangan">Keterangan</label>
-                              <input type="text" name="keterangan" class="form-control" id="keterangan" value="{{ $pemilik->keterangan }}" placeholder="Masukkan Keterangan" required>
-                            </div>
-                            <br>
-                            <button type="submit" class="btn btn-primary">Update</button>
-                        </form>
+                        <form method="post" action="{{ route('pemilik.update', $pemilik->id_pemilik) }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+
+                        <div class="form-group">
+                            <label for="nama_pemilik">Nama Pemilik</label>
+                            <input type="text" name="nama_pemilik" class="form-control" id="nama_pemilik" value="{{ $pemilik->nama_pemilik }}" placeholder="Masukkan Nama Pemilik" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_pemetaan">No. Persil</label>
+                            <select id="id_pemetaan" class="form-control" name="id_pemetaan" required>
+                                <option value="" disabled>Pilih No. Persil</option>
+                                @foreach($pemetaan as $item)
+                                    <option value="{{ $item->id_pemetaan }}" {{ $item->id_pemetaan == $pivot ? 'selected' : '' }}>
+                                        {{ $item->persil }} - Blok {{ $item->blok }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="luas">Luas</label>
+                            <input id="luas" type="number" class="form-control" name="luas" value="{{ $pemilik->luas }}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nomor_letterc">No. Letter C</label>
+                            <input type="number" name="nomor_letterc" class="form-control" id="nomor_letterc" value="{{ $pemilik->nomor_letterc }}" placeholder="Masukkan Nomor Letter C" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="keterangan">Keterangan</label>
+                            <input type="text" name="keterangan" class="form-control" id="keterangan" value="{{ $pemilik->keterangan }}" placeholder="Masukkan Keterangan" required>
+                        </div>
+
+                        <br>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+
                     </div>
                 </div>
             </div>

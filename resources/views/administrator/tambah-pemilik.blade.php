@@ -68,10 +68,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="persil">No. Persil</label>
-                                <select id="persil" class="form-control" name="persil" required>
-                                    <option value="" disabled selected>Pilih Kelas</option>
+                                <select id="id_pemetaan" class="form-control" name="id_pemetaan" required>
+                                    <option value="" disabled selected>Pilih No. Persil</option>
                                     @foreach($pemetaan as $item)
-                                        <option value="{{ $item->persil }}">{{ $item->persil }}</option>
+                                        <option value="{{ $item->id_pemetaan }}">
+                                            {{ $item->persil }} - Blok {{ $item->blok }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>

@@ -25,7 +25,11 @@
             <tr>
                 <th scope="row">{{$loop->iteration}}</th>
                 <td>{{ $item->nama_pemilik }}</td>
-                <td>{{ $item->persil }}</td>
+                <td>
+                    @foreach ($item->pemetaan as $p)
+                        {{ $p->persil }}<br>
+                    @endforeach
+                </td>
                 <td>{{ $item->luas }}</td>
                 <td><b>{{ $item->nomor_letterc }}</b></td>
                 <td>{{ $item->keterangan }}</td>

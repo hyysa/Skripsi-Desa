@@ -85,7 +85,11 @@
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $item->nama_pemilik }}</td>
-                <td>{{ $item->persil }}</td>
+                <td>
+                    @foreach ($item->pemetaan as $p)
+                        {{ $p->persil }}<br>
+                    @endforeach
+                </td>
                 <td>{{ $item->luas }}</td>
                 <td>{{ $item->nomor_letterc }}</td>
                 <td>{{ $item->keterangan }}</td>

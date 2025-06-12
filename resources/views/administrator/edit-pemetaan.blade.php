@@ -39,7 +39,7 @@
                         <h6 class="m-0 font-weight-bold text-primary">Form Ubah Data</h6>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('pemetaan.update', $pemetaan->id) }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('pemetaan.update', $pemetaan->id_pemetaan) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="form-group">

@@ -89,7 +89,7 @@ class HomeController extends Controller
 
     public function listPemilik()
     {
-        $pemilik = Pemilik::all();
+        $pemilik = Pemilik::with('pemetaan')->get();
         return view('pages.profil.daftar-pemilik', ['title' => 'daftar-pemilik'], compact('pemilik'));
     }
 }
