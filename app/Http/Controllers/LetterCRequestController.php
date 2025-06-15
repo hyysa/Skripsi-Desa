@@ -24,15 +24,18 @@ class LetterCRequestController extends Controller
         $request->validate([
             'nama_pemohon' => 'required',
             'nohp' => 'required',
+            'nik' => 'required',
+            'persil' => 'required',
             'an_letterc' => 'required',
+            'keterangan' => 'required',
         ]);
-    
-        LettercRequest::create($request->only('nama_pemohon', 'nohp', 'an_letterc'));
-    
+
+        LettercRequest::create($request->only('nama_pemohon', 'nohp', 'an_letterc', 'nik', 'persil', 'keterangan'));
+
         return redirect()->back()->with('success', 'Permohonan Anda Telah Dibuat, Anda akan dihubungi melalui WhatsApp');
     }
 
-       /**
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)

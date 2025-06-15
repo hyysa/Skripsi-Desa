@@ -13,6 +13,9 @@ class LettercRequest extends Model
     protected $fillable = [
         'nama_pemohon',
         'nohp',
+        'nik',
+        'persil',
         'an_letterc',
+        'keterangan',
     ];
 }

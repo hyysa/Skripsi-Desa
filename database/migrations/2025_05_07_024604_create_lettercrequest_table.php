@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('nama_pemohon');
             $table->string('nohp');
+            $table->string('nik');
+            $table->integer('persil');
             $table->text('an_letterc');
+            $table->string('keterangan');
             $table->timestamps();
         });
     }
