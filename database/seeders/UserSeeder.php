@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -14,10 +13,16 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Hapus data existing jika ada
+        // Nonaktifkan foreign key checks
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        // Hapus data dari tabel users
         DB::table('users')->truncate();
 
-        // Tambahkan data baru
+        // Aktifkan kembali foreign key checks
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        // Masukkan data baru
         DB::table('users')->insert([
             [
                 'name' => 'Admin',
