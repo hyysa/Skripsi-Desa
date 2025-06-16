@@ -65,7 +65,10 @@
                                 <th>No</th>
                                 <th>Nama Pemohon</th>
                                 <th>Nomor HP</th>
+                                <th>NIK</th>
+                                <th>Persil</th>
                                 <th>Permohonan LetterC Atas Nama</th>
+                                <th>Keterangan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -75,7 +78,10 @@
                                     <th scope="row">{{$loop->iteration}}</th>
                                     <td>{{ $item->nama_pemohon }}</td>
                                     <td>{{ $item->nohp }}</td>
+                                    <td>{{ $item->nik }}</td>
+                                    <td>{{ $item->persil }}</td>
                                     <td>{{ $item->an_letterc }}</td>
+                                    <td>{{ $item->keterangan }}</td>
                                     <td class="d-flex gap-2">
                                     <form method="post" action="{{ route('lettercrequest.delete', $item->id) }}">
                                             @csrf
