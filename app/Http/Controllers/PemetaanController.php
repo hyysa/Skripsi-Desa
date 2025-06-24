@@ -23,7 +23,24 @@ class PemetaanController extends Controller
     public function create()
     {
         $pemetaan = Pemetaan::all(); // Ambil semua data pemetaan dari database
-        return view('administrator.tambah-peta', compact('pemetaan'));
+        $existingPolygons = \App\Models\Pemetaan::all()->map(function ($peta) {
+            return [
+                'type' => 'Feature',
+                'geometry' => json_decode($peta->koordinat),
+                'properties' => [
+                    'blok' => $peta->blok,
+                    'persil' => $peta->persil,
+                    'kelas' => $peta->kelas,
+                ],
+            ];
+        });
+        return view('administrator.tambah-peta', [
+            'pemetaan' => $pemetaan,
+            'existingPolygons' => json_encode([
+                'type' => 'FeatureCollection',
+                'features' => $existingPolygons,
+            ])
+        ]);
     }
 
     /**
@@ -46,6 +63,7 @@ class PemetaanController extends Controller
             'kelas' => $request->kelas,
             'koordinat' => $request->koordinat, // Data polygon dari Map
         ]);
+
 
         return redirect()->route('pemetaan.index')->with('message', 'Pemetaan berhasil ditambahkan');
     }

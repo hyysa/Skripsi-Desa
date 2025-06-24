@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('id')->unique();
             $table->string('nama_author', 50);
             $table->string('judul', 200);
-            $table->string('isi_berita', 1000);
+            $table->text('isi_berita');
             $table->string('kategori');
             $table->string('dokumentasi');
             $table->timestamps();

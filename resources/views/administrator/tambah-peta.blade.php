@@ -74,12 +74,13 @@
 
         @push('script')
         <script>
+             const existingPolygons = {!! $existingPolygons !!};
             document.addEventListener('DOMContentLoaded', function () {
                 var map = L.map('map').setView([-8.183608213057614, 112.19258084611654], 16);
                 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                     attribution: '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
                     maxZoom: 23,
-                    id: 'mapbox/satellite-streets-v11',
+                    id: 'mapbox/streets-v11',
                     tileSize: 512,
                     zoomOffset: -1,
                     accessToken: 'pk.eyJ1IjoiaGlsZ2FzYXRyaWEiLCJhIjoiY203dzdvNDJxMDJuaDJxcHRnbGV1emUzYyJ9.LJBgThSO_DyKtLl2SizjxA'
@@ -87,6 +88,26 @@
 
                 var drawnItems = new L.FeatureGroup();
                 map.addLayer(drawnItems);
+
+                // Tampilkan data poligon lama
+                L.geoJSON(existingPolygons, {
+                    style: {
+                        color: 'gray',
+                        fillColor: '#cccccc',
+                        fillOpacity: 0.5,
+                        weight: 1
+                    },
+                    onEachFeature: function (feature, layer) {
+                        layer.bindPopup(
+                            `<strong>Blok:</strong> ${feature.properties.blok}<br>
+                            <strong>Persil:</strong> ${feature.properties.persil}<br>
+                            <strong>Kelas:</strong> ${feature.properties.kelas}`
+                        );
+                        layer.pm.disable(); // disable editing
+                    }
+                }).addTo(map);
+
+                // Konfigurasi drawing polygon baru
                 map.pm.addControls({
                     position: 'topleft',
                     drawMarker: false,
@@ -120,6 +141,7 @@
                     document.getElementById('koordinat').value = '';
                 });
             });
+
         </script>
         @endpush
     </div>
