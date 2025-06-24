@@ -75,7 +75,7 @@
                                 <option value="" disabled>Pilih No. Persil</option>
                                 @foreach($pemetaan as $item)
                                     <option value="{{ $item->id_pemetaan }}" {{ $item->id_pemetaan == $pivot ? 'selected' : '' }}>
-                                        {{ $item->persil }} - Blok {{ $item->blok }}
+                                        {{ $item->persil }}{{ $item->kelas }} - Blok {{ $item->blok }}
                                     </option>
                                 @endforeach
                             </select>

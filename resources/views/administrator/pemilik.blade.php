@@ -75,7 +75,7 @@
                                 <td>{{ $item->nama_pemilik }}</td>
                                 <td>
                                     @foreach ($item->pemetaan as $p)
-                                        {{ $p->persil }}<br>
+                                        {{ $p->persil }}{{ $p->kelas }}<br>
                                     @endforeach
                                 </td>
                                 <td>{{ $item->luas }}</td>
