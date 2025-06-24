@@ -88,8 +88,27 @@ class PemetaanController extends Controller
      */
     public function edit(string $id)
     {
-        $pemetaan = Pemetaan::find($id);
-        return view('administrator.edit-pemetaan', compact('pemetaan'));
+        $pemetaan = Pemetaan::findOrFail($id);
+
+        $existingPolygons = Pemetaan::where('id_pemetaan', '!=', $id)->get()->map(function ($peta) {
+            return [
+                'type' => 'Feature',
+                'geometry' => json_decode($peta->koordinat),
+                'properties' => [
+                    'blok' => $peta->blok,
+                    'persil' => $peta->persil,
+                    'kelas' => $peta->kelas,
+                ],
+            ];
+        });
+
+        return view('administrator.edit-pemetaan', [
+            'pemetaan' => $pemetaan,
+            'existingPolygons' => [
+                'type' => 'FeatureCollection',
+                'features' => $existingPolygons
+            ]
+        ]);
     }
 
     /**

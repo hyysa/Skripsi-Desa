@@ -75,9 +75,13 @@
         </div>
 
         @push('script')
+        {{-- Pastikan letakkan ini di blade Anda, SEBELUM script utama --}}
         <script>
+            const existingPolygons = @json($existingPolygons);
+            const currentPolygon = @json($pemetaan->koordinat);
+
             document.addEventListener('DOMContentLoaded', function () {
-                var map = L.map('map').setView([-8.183608213057614, 112.19258084611654], 16);
+                const map = L.map('map').setView([-8.1836, 112.1925], 16);
 
                 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                     attribution: '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
@@ -88,9 +92,48 @@
                     accessToken: 'pk.eyJ1IjoiaGlsZ2FzYXRyaWEiLCJhIjoiY203dzdvNDJxMDJuaDJxcHRnbGV1emUzYyJ9.LJBgThSO_DyKtLl2SizjxA'
                 }).addTo(map);
 
-                var drawnItems = new L.FeatureGroup();
+                const drawnItems = new L.FeatureGroup();
                 map.addLayer(drawnItems);
-                
+
+                // Tampilkan semua poligon lama (readonly)
+                L.geoJSON(existingPolygons, {
+                    style: {
+                        color: 'gray',
+                        fillColor: '#ccc',
+                        fillOpacity: 0.5,
+                        weight: 1
+                    },
+                    onEachFeature: function (feature, layer) {
+                        layer.bindPopup(
+                            `<strong>Blok:</strong> ${feature.properties.blok}<br>
+                            <strong>Persil:</strong> ${feature.properties.persil}<br>
+                            <strong>Kelas:</strong> ${feature.properties.kelas}`
+                        );
+                        layer.pm.disable(); // readonly
+                    }
+                }).addTo(map);
+
+                let editableLayer = null;
+
+                // Tampilkan polygon yang sedang diedit
+                if (currentPolygon && currentPolygon.type === 'Polygon' && Array.isArray(currentPolygon.coordinates)) {
+                    try {
+                        const coords = currentPolygon.coordinates[0];
+                        const latlngs = coords.map(c => [c[1], c[0]]);
+                        editableLayer = L.polygon(latlngs, { color: 'blue' }).addTo(drawnItems);
+                        map.fitBounds(editableLayer.getBounds());
+
+                        editableLayer.on('pm:edit', function (e) {
+                            updateCoordinates(e.layer);
+                        });
+
+                        updateCoordinates(editableLayer);
+                    } catch (e) {
+                        console.error("Koordinat tidak valid:", e);
+                    }
+                }
+
+                // Aktifkan kontrol edit
                 map.pm.addControls({
                     position: 'topleft',
                     drawMarker: false,
@@ -103,56 +146,42 @@
                     removalMode: true
                 });
 
-                var koordinatInput = document.getElementById('koordinat');
-                var drawnPolygon = null;
-
-                var koordinat = {!! json_encode($pemetaan->koordinat ?? '') !!};
-
-                if (koordinat) {
-                    try {
-                        var coords = JSON.parse(koordinat);
-                        var coordinates = coords.coordinates[0];
-
-                        coordinates.forEach(coord => coord.reverse());
-
-                        drawnPolygon = L.polygon(coordinates, { color: 'blue' }).addTo(drawnItems);
-                        map.fitBounds(drawnPolygon.getBounds());
-
-                        drawnPolygon.on('pm:edit', function (e) {
-                            updateCoordinates(e.layer);
-                        });
-                    } catch (e) {
-                        console.error("Error parsing koordinat:", e);
-                    }
-                }
-
-                function updateCoordinates(layer) {
-                    var geoJson = layer.toGeoJSON();
-                    koordinatInput.value = JSON.stringify(geoJson.geometry);
-                }
-
+                // Saat menggambar polygon baru
                 map.on('pm:create', function (e) {
-                    if (drawnPolygon) {
-                        map.removeLayer(drawnPolygon);
+                    if (editableLayer) {
+                        drawnItems.removeLayer(editableLayer);
                     }
-                    drawnPolygon = e.layer;
-                    drawnItems.clearLayers();
-                    drawnItems.addLayer(drawnPolygon);
-                    updateCoordinates(drawnPolygon);
+
+                    editableLayer = e.layer;
+                    drawnItems.addLayer(editableLayer);
+                    updateCoordinates(editableLayer);
                 });
 
+                // Saat mengedit polygon
                 map.on('pm:edit', function (e) {
                     e.layers.eachLayer(function (layer) {
                         updateCoordinates(layer);
                     });
                 });
 
+                // Saat menghapus polygon
                 map.on('pm:remove', function (e) {
-                    koordinatInput.value = '';
+                    e.layers.eachLayer(function (layer) {
+                        if (editableLayer && layer === editableLayer) {
+                            editableLayer = null;
+                            document.getElementById('koordinat').value = '';
+                        }
+                    });
                 });
 
+                // Fungsi untuk update nilai koordinat
+                function updateCoordinates(layer) {
+                    const geoJson = layer.toGeoJSON();
+                    document.getElementById('koordinat').value = JSON.stringify(geoJson.geometry);
+                }
             });
         </script>
+
         @endpush
     </div>
 </div>
