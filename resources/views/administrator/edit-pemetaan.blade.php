@@ -97,11 +97,23 @@
 
                 // Tampilkan semua poligon lama (readonly)
                 L.geoJSON(existingPolygons, {
-                    style: {
-                        color: 'gray',
-                        fillColor: '#ccc',
-                        fillOpacity: 0.5,
-                        weight: 1
+                    style: function (feature) {
+                        // Fungsi generate warna hex acak
+                        function getRandomColor() {
+                            const letters = '0123456789ABCDEF';
+                            let color = '#';
+                            for (let i = 0; i < 6; i++) {
+                                color += letters[Math.floor(Math.random() * 16)];
+                            }
+                            return color;
+                        }
+
+                        return {
+                            color: '#333',                     // Warna garis pinggir
+                            fillColor: getRandomColor(),       // Warna isi acak
+                            fillOpacity: 0.5,
+                            weight: 1
+                        };
                     },
                     onEachFeature: function (feature, layer) {
                         layer.bindPopup(
@@ -109,7 +121,7 @@
                             <strong>Persil:</strong> ${feature.properties.persil}<br>
                             <strong>Kelas:</strong> ${feature.properties.kelas}`
                         );
-                        layer.pm.disable(); // readonly
+                        layer.pm.disable(); // disable editing
                     }
                 }).addTo(map);
 
