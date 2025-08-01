@@ -79,7 +79,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="luas">Luas</label>
-                                <input id="luas" type="number" class="form-control" name="luas" required>
+                                <input id="luas" type="number" class="form-control" name="luas" placeholder="Masukkan luas" required>
                             </div>
                             <div class="form-group">
                               <label for="nomor_letterc">No. Letter C</label>

@@ -83,7 +83,7 @@
 
                         <div class="form-group">
                             <label for="luas">Luas</label>
-                            <input id="luas" type="number" class="form-control" name="luas" value="{{ $pemilik->luas }}" required>
+                            <input id="luas" type="number" class="form-control" name="luas" value="{{ $pemilik->luas }}" placeholder="Masukkan luas" required>
                         </div>
 
                         <div class="form-group">

@@ -33,7 +33,7 @@
         </div>
 
         <div class="row">
-            <div class="col-xl-9 col-lg-7">
+            <div class="col-xl-8 col-lg-7">
                 <div class="card shadow mb-4 h-100">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Form Ubah Data</h6>
@@ -44,11 +44,11 @@
                             @method('PUT')
                             <div class="form-group">
                                 <label for="blok">Blok</label>
-                                <input id="blok" type="text" class="form-control" name="blok" value="{{ $pemetaan->blok }}" required>
+                                <input id="blok" type="text" class="form-control" name="blok" value="{{ $pemetaan->blok }}" placeholder="Masukkan Blok" required>
                             </div>
                             <div class="form-group">
                                 <label for="persil">No. Persil</label>
-                                <input id="persil" type="text" class="form-control" name="persil" value="{{ $pemetaan->persil }}" required>
+                                <input id="persil" type="text" class="form-control" name="persil" value="{{ $pemetaan->persil }}" placeholder="Masukkan No. Persil" required>
                             </div>
                             <div class="form-group">
                                 <label for="kelas">Kelas</label>
@@ -72,6 +72,42 @@
                     </div>
                 </div>
             </div>
+             {{-- blok yang sudah ada --}}
+            <div class="col-xl-4 col-lg-5">
+                    <div class="card shadow mb-4">
+                        <div
+                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Blok dan Persil</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="pb-2 d-flex flex-column">
+                                
+                                <span class="mb-2">
+                                    <i class="fas fa-circle text-primary"></i> Data blok dan persil yang sudah ada
+                                </span>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Blok</th>
+                                                <th>Persil</th>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($blok as $item)
+                                            <tr>
+                                                <th scope="row">{{$loop->iteration}}</th>
+                                                <td>{{ $item->blok }}</td>
+                                                <td>{{ $item->persil }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
 
         @push('script')
@@ -211,4 +247,26 @@
             });
         </script>
     @endif
+@endpush
+@push('style')
+<style>
+    /* Agar kolom search tidak terlalu panjang */
+    div.dataTables_filter {
+        float: right;
+        text-align: right;
+    }
+
+    div.dataTables_filter input {
+        width: auto !important;
+        max-width: 120px; /* kamu bisa sesuaikan, misal 100px - 160px */
+        display: inline-block;
+    }
+
+    /* Opsional: Perbaiki label agar rata tengah vertikal */
+    div.dataTables_filter label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+</style>
 @endpush

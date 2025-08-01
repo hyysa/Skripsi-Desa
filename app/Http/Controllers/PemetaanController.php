@@ -89,6 +89,7 @@ class PemetaanController extends Controller
     public function edit(string $id)
     {
         $pemetaan = Pemetaan::findOrFail($id);
+        $blok = Pemetaan::all();
 
         $existingPolygons = Pemetaan::where('id_pemetaan', '!=', $id)->get()->map(function ($peta) {
             return [
@@ -107,7 +108,8 @@ class PemetaanController extends Controller
             'existingPolygons' => [
                 'type' => 'FeatureCollection',
                 'features' => $existingPolygons
-            ]
+            ],
+            'blok' => $blok
         ]);
     }
 
