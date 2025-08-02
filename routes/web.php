@@ -162,6 +162,8 @@ Route::post('/pages/login', [LoginController::class, 'authenticate']);
 Route::middleware(['auth'])->group(function () {
     //Route Dashboard
     Route::get('/administrator', [AdminController::class, 'index']);
+    Route::get('/dashboard/chart-letterc', [DashboardController::class, 'chartLetterC']);
+
 
     //Route Berita
     Route::get('/administrator/berita', [BeritaController::class, 'index'])->name('berita.index');
@@ -183,6 +185,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/administrator/edit-pemetaan/{id}', [PemetaanController::class, 'update'])->name('pemetaan.update');
     Route::delete('/administrator/delete-pemetaan/{id}', [PemetaanController::class, 'destroy'])->name('pemetaan.delete');
     //Route Letter C
+    
     Route::get('/administrator/letterc',    [LetterCController::class, 'index'])->name('letterc.index');
     Route::get('/administrator/tambah-letterc', [LetterCController::class, 'create'])->name('letterc.tambah');
     Route::post('/administrator/letterc',   [LetterCController::class, 'store'])->name('letterc.store');

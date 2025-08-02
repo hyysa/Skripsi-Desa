@@ -19,7 +19,38 @@ class AdminController extends Controller
         $video =  Video::all();
         $pemilik = Pemilik::all();
         $letterc = Letterc::all();
-        return view('administrator.dashboard', compact('berita', 'video', 'pemilik', 'letterc'));
+        // Data untuk diagram batang sebelumnya
+        $jumlahLetterC = \App\Models\LetterC::selectRaw("jenis_tanah, COUNT(*) as total")
+    ->groupBy("jenis_tanah")
+    ->get();
+
+$labels = [];
+$data = [];
+
+foreach ($jumlahLetterC as $item) {
+    if ($item->jenis_tanah === 's') {
+        $labels[] = 'Sawah';
+    } elseif ($item->jenis_tanah === 'tk') {
+        $labels[] = 'Tanah Kering';
+    } else {
+        $labels[] = $item->jenis_tanah;
+    }
+
+    $data[] = $item->total;
+}
+
+        // Pie chart: total luas per kelas desa
+        $kelasLuas = \App\Models\LetterC::selectRaw("kelas_desa, SUM(luas) as total_luas")
+                        ->groupBy('kelas_desa')
+                        ->get();
+
+        $kelasLabels = $kelasLuas->pluck('kelas_desa')->toArray();
+        $kelasData = $kelasLuas->pluck('total_luas')->toArray();
+
+        // Histogram: ambil semua luas tanah
+        $luasTanah = \App\Models\LetterC::pluck('luas')->toArray();
+        return view('administrator.dashboard', compact('berita', 'video', 'pemilik', 'letterc','labels','data','kelasLabels', 'kelasData',
+        'luasTanah'));
     }
 
     /**

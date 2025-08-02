@@ -1,6 +1,7 @@
 @extends('layouts.super')
 @section('title', 'Dashboard | Administrator')
 @section('content')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div id="content">
 
     <!-- Topbar -->
@@ -124,48 +125,156 @@
                 </div>
             </div>
         </div>
-
-        <!-- Content Row -->
-
         <div class="row">
-
-            <!-- Area Chart -->
-            <div class="col-xl-8 col-lg-7">
+            <div class="col-xl-6 col-lg-7">
                 <div class="card shadow mb-4">
-                    <!-- Card Header - Dropdown -->
                     <div
                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">Daftar Berita</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Jumlah Jenis Tanah</h6>
                     </div>
-                    <!-- Card Body -->
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Tanggal</th>
-                                        <th>Judul</th>
-                                        <th>Kategori</th>
-                                    </tr>
-                                </thead>
-                                <tbody> 
-                                    @foreach ($berita as $item)
-                                    <tr>
-                                        <td>{{$item->created_at}}</td>
-                                        <td>{{$item->judul}}</td>
-                                        <td>{{$item->kategori}}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <div class="pb-2 d-flex flex-column">
+                            <canvas id="barChart"></canvas>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+
+            <div class="col-xl-6 col-lg-7">
+                <div class="card shadow mb-4">
+                    <div
+                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Distribusi Luas Tanah</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="pb-2 d-flex flex-column">
+                            <canvas id="histogramChart"></canvas>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+    
+            {{-- <div class="col-xl-4 col-lg-7">
+                <div class="card shadow mb-4">
+                    <div
+                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Proporsi Luas (Kelas Desa)</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="pb-2 d-flex flex-column">
+                            <canvas id="pieChart"></canvas>
+                        </div>
+                    </div>
+                 </div>
+            </div> --}}
+        </div>        
+     <script>
+     // Bar Chart
+     new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode($labels) !!},
+            datasets: [{
+                label: 'Jumlah',
+                data: {!! json_encode($data) !!},
+                backgroundColor: '#4CAF50'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+     });
+
+     // Pie Chart
+    //  new Chart(document.getElementById('pieChart'), {
+    //     type: 'pie',
+    //     data: {
+    //         labels: {!! json_encode($kelasLabels) !!},
+    //         datasets: [{
+    //             data: {!! json_encode($kelasData) !!},
+    //             backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#9C27B0']
+    //         }]
+    //     },
+    //     options: {
+    //         responsive: true,
+    //         plugins: {
+    //             legend: { position: 'bottom' }
+    //         }
+    //     }
+    //  });
+
+            // Histogram
+            const luasData = {!! json_encode($luasTanah) !!};
+            const binSize = 100;
+            const maxLuas = Math.max(...luasData);
+            const bins = Array.from({length: Math.ceil(maxLuas / binSize)}, (_, i) => ({
+                range: `${i * binSize}-${(i + 1) * binSize - 1}`,
+                count: 0
+            }));
+            luasData.forEach(value => {
+                const index = Math.floor(value / binSize);
+                if (bins[index]) bins[index].count++;
+            });
+            new Chart(document.getElementById('histogramChart'), {
+                type: 'bar',
+                data: {
+                    labels: bins.map(b => b.range),
+                    datasets: [{
+                        label: 'Jumlah',
+                        data: bins.map(b => b.count),
+                        backgroundColor: '#FF9800'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { title: { display: true, text: 'Luas (da²)' } },
+                        y: { beginAtZero: true, title: { display: true, text: 'Jumlah' } }
+                    }
+                }
+            });
+            </script>
+
+
+            <!-- Content Row -->
+            <div class="row">
+                <div class="col-xl-8 col-lg-7">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div
+                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Daftar Berita</h6>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Tanggal</th>
+                                            <th>Judul</th>
+                                            <th>Kategori</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody> 
+                                        @foreach ($berita as $item)
+                                        <tr>
+                                            <td>{{$item->created_at}}</td>
+                                            <td>{{$item->judul}}</td>
+                                            <td>{{$item->kategori}}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Pie Chart -->
-            <div class="col-xl-4 col-lg-5">
-                <div class="card shadow mb-4">
+                <div class="col-xl-4 col-lg-5">
+                    <div class="card shadow mb-4">
                     <div
                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h6 class="m-0 font-weight-bold text-primary">Jadwal Pelayanan</h6>
@@ -184,10 +293,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+              </div>
         </div>
     </div>
-    <!-- /.container-fluid -->
 
+    <!-- /.container-fluid -->
 </div>
 @endsection
