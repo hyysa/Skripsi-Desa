@@ -40,7 +40,7 @@
         </div>
         @push('script1')
         <script>
-            mapboxgl.accessToken = 'pk.eyJ1IjoiaGlsZ2FzYXRyaWEiLCJhIjoiY203dzdvNDJxMDJuaDJxcHRnbGV1emUzYyJ9.LJBgThSO_DyKtLl2SizjxA';
+            mapboxgl.accessToken = '#';
         
             var map = L.map('map').setView([-8.1836, 112.1925], 15);
         
